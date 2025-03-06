@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .camel-table {
+            width: 700px;
+        }
+        .camel-table img {
+            width: 100%;
+            height: auto;
+        }
+        .no-border {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>Table 1: Table <br> <b>of Fruits and <br> Their Prices</b></h3>
+    <table>
+        <tr>
+            <th>Fruit</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>Apple</td>
+            <td>$0.25</td>
+        </tr>
+        <tr>
+            <td>Orange</td>
+            <td>$0.50</td>
+        </tr>
+        <tr>
+            <td>Banana</td>
+            <td>$1.00</td>
+        </tr>
+        <tr>
+            <td>Pineapple</td>
+            <td>$2.00</td>
+        </tr>
+        <tr>
+            <td class="bold">Total</td>
+            <td class="bold">$3.75</td>
+        </tr>
+    </table>
+
+    <h3>Table 2: A more complex sample table</h3>
+    <table class="camel-table">
+        <tr>
+            <td rowspan="4"><img src="desert-image.jpg" alt="Desert Image"></td>
+            <td colspan="4" class="bold">Camelid comparison <br> Approximate as of 6/2011</td>
+        </tr>
+        <tr>
+            <th># of humps</th>
+            <th>Indigenous region</th>
+            <th>Spits?</th>
+            <th>Produces wool?</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Arabian Peninsula</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Africa/Asia</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td class="no-border"></td>
+            <td class="bold">Llamas</td>
+            <td>1</td>
+            <td>Andes Mountains</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+    </table>
+
+</body>
+</html>
