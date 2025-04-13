@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} My First Index HTML Page {% endblock title %}
 {% block content %}
-{% for book in books%}
+<!-- {% for book in books%}
 <ul>
 <li>
     {{book.id}}
@@ -13,9 +13,17 @@
 <li>
     {{book.author}}
 </li>
+<li>
+    {{book.edition}}
+</li>
 
 </ul>
 
+{% endfor %} -->
+
+{% for obj in books %}
+ID: {{obj.id}}, Title: {{obj.title}} Price: {{obj.price}}, Edition: {{obj.edition}}
+<hr>
 {% endfor %}
 
 {% endblock content %}

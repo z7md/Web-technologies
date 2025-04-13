@@ -1,4 +1,9 @@
 from django.shortcuts import render
+from .models import Book
+from .models import Address
+from django.db.models import Q,Count, Sum, Avg, Max, Min
+from django.db import models
+
 
 
 from django.http import HttpResponse
@@ -54,4 +59,93 @@ def __getBooksList():
     book2 = {'id':56788765,'title':'Reversing: Secrets of Reverse Engineering', 'author':'E. Eilam'}
     book3 = {'id':43211234, 'title':'The Hundred-Page Machine Learning Book', 'author':'Andriy Burkov'}
     return [book1, book2, book3]
+
+def simple_query(request):
+    mybooks=Book.objects.filter(title__icontains='i') # <- multiple objects
+    return render(request, 'bookmodule/bookList.html', {'books':mybooks})
+
+def complex_query(request):
+    mybooks=Book.objects.filter(author__isnull =False).filter(title__icontains='i').filter(edition__gte = 1).exclude(price__lte = 100)[:10]
+    if len(mybooks)>=1:
+        return render(request, 'bookmodule/bookList.html', {'books':mybooks})
+    else:
+        return render(request, 'bookmodule/index.html')
+    
+def lab8_task1(request):
+    mybooks = Book.objects.filter(
+        Q(author__isnull=False) & 
+        Q(title__icontains='i') & 
+        Q(edition__gte=1) & 
+        Q(price__lte=80)
+    )[:10]
+    
+    if len(mybooks) >= 1:
+        return render(request, 'bookmodule/bookList.html', {'books': mybooks})
+    else:
+        return render(request, 'bookmodule/index.html')
+    
+def lab8_task2(request):
+    
+    edition_condition = Q(edition__gt=3)
+    title_condition = Q(title__icontains='qu')
+    author_condition = Q(author__icontains='qu')
+    
+    
+    combined_condition = edition_condition & (title_condition | author_condition)
+    
+    
+    books = Book.objects.filter(combined_condition)
+    
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task3(request):
+   
+    edition_condition = ~Q(edition__gt=3) 
+    title_condition = ~Q(title__icontains='qu')  
+    author_condition = ~Q(author__icontains='qu')  
+    
+
+    combined_condition = edition_condition & (title_condition | author_condition)
+    
+
+    books = Book.objects.filter(combined_condition)
+    
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task4(request):
+
+    books = Book.objects.all().order_by('title')
+    
+
+    
+    return render(request, 'bookmodule/bookList.html', {'books': books})
+
+def lab8_task5(request):
+    # Get all book statistics using aggregation
+    stats = Book.objects.aggregate(
+        total_books=Count('id'),
+        total_price=Sum('price'),
+        avg_price=Avg('price'),
+        max_price=Max('price'),
+        min_price=Min('price')
+    )
+    
+    # Format the numbers for display
+    stats_context = {
+        'total_books': stats['total_books'],
+        'total_price': f"{stats['total_price']:,.2f}",
+        'avg_price': f"{stats['avg_price']:,.2f}",
+        'max_price': f"{stats['max_price']:,.2f}",
+        'min_price': f"{stats['min_price']:,.2f}",
+    }
+    
+    return render(request, 'bookmodule/lab8_task5.html', stats_context)
+
+def student_count_by_city(request):
+
+    cities = Address.objects.annotate(
+        student_count=models.Count('student')
+    ).order_by('city')
+    
+    return render(request, 'bookmodule/student_count.html', {'cities': cities})
 

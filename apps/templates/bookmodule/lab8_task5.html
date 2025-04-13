@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Statistics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .stats-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        .stat-label {
+            font-weight: bold;
+            color: #34495e;
+        }
+        .stat-value {
+            color: #16a085;
+            font-family: monospace;
+        }
+        .nav-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .nav-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #3498db;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .nav-links a:hover {
+            background-color: #f0f0f0;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Statistics Report</h1>
+    
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-label">Total Books:</span>
+            <span class="stat-value">{{ total_books }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Price of All Books:</span>
+            <span class="stat-value">${{ total_price }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Average Book Price:</span>
+            <span class="stat-value">${{ avg_price }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Most Expensive Book:</span>
+            <span class="stat-value">${{ max_price }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Least Expensive Book:</span>
+            <span class="stat-value">${{ min_price }}</span>
+        </div>
+    </div>
+    
+</body>
+</html>
