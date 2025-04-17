@@ -1,0 +1,6 @@
+<h1>Students per Course</h1>
+<ul>
+{% for course in courses %}
+    <li>{{ course.title }}: {{ course.student_count }} students</li>
+{% endfor %}
+</ul>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Book
-from .models import Address
+
+from .models import Book, Address ,Department, Student, Course,Student1
 from django.db.models import Q,Count, Sum, Avg, Max, Min
 from django.db import models
 
@@ -149,3 +149,51 @@ def student_count_by_city(request):
     
     return render(request, 'bookmodule/student_count.html', {'cities': cities})
 
+
+def department_student_counts(request):
+    departments = Department.objects.annotate(
+        student_count=Count('student1')
+    ).order_by('name')
+    
+    return render(request, 'bookmodule/lab9task1.html', {
+        'departments': departments
+    })
+
+def course_registration_counts(request):
+    courses = Course.objects.annotate(
+        student_count=Count('student1')
+    ).order_by('title')
+    
+    return render(request, 'bookmodule/lab9task2.html', {
+        'courses': courses
+    })
+
+def oldest_student_by_department(request):
+    
+    departments = Department.objects.all()
+    department_data = []
+    
+    for dept in departments:
+        oldest = Student1.objects.filter(department=dept).order_by('id').first()
+        if oldest:
+            department_data.append({
+                'department': dept,
+                'oldest_student': oldest
+            })
+    
+    return render(request, 'bookmodule/lab9task3.html', {
+        'department_data': department_data
+    })
+
+def departments_more_than_two_students(request):
+    departments = Department.objects.annotate(
+        student_count=Count('student1')
+    ).filter(
+        student_count__gt=2
+    ).order_by(
+        '-student_count'
+    )
+    
+    return render(request, 'bookmodule/lab9task4.html', {
+        'departments': departments
+    })

@@ -1,0 +1,6 @@
+<h1>Students per Department</h1>
+<ul>
+{% for dept in departments %}
+    <li>{{ dept.name }}: {{ dept.student_count }} students</li>
+{% endfor %}
+</ul>
