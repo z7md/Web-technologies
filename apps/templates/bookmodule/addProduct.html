@@ -1,0 +1,8 @@
+<h1>Adding a New Product</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <!-- Additionally -->
+    <input type="file" name="coverPage"/>
+    <button type="submit">Add Product</button>
+</form>

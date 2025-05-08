@@ -15,7 +15,6 @@ class Address(models.Model):
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
-    age = models.IntegerField()
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -57,3 +56,17 @@ class Student1(models.Model):
     def __str__(self):
         return self.name
     
+
+class Student2(models.Model):
+    name = models.CharField(max_length=100)
+    address = models.ManyToManyField(Address)
+
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.FileField(upload_to='product_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name

@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Book, Address ,Department, Student, Course,Student1
+from .models import Book, Address ,Department, Student, Course,Student1,Student2,Product
 from django.db.models import Q,Count, Sum, Avg, Max, Min
 from django.db import models
+from .forms import BookForm,StudentForm,Student2Form,ProductForm
 
 
 
@@ -61,7 +62,7 @@ def __getBooksList():
     return [book1, book2, book3]
 
 def simple_query(request):
-    mybooks=Book.objects.filter(title__icontains='i') # <- multiple objects
+    mybooks=Book.objects.filter(title__icontains='of') # <- multiple objects
     return render(request, 'bookmodule/bookList.html', {'books':mybooks})
 
 def complex_query(request):
@@ -197,3 +198,160 @@ def departments_more_than_two_students(request):
     return render(request, 'bookmodule/lab9task4.html', {
         'departments': departments
     })
+
+
+def list_books10(request):
+    books = Book.objects.all()  # Get all books from the database
+    return render(request, 'bookmodule/list_books10.html', {'books': books})
+
+def list_books11(request):
+    books = Book.objects.all()  # Get all books from the database
+    return render(request, 'bookmodule/list_books11.html', {'books': books})
+
+def add_book(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        price = request.POST.get('price')
+        edition = request.POST.get('edition')
+        
+        # Save the new book to the database
+        Book.objects.create(title=title, author=author, price=price, edition=edition)
+        
+        return redirect('/books/lab10_part1/listbooks')
+    
+    return render(request, 'bookmodule/add_book.html')
+
+def delete_book(request, id):
+    book = get_object_or_404(Book, id=id)
+    book.delete()  # Delete the book
+    return redirect('/books/lab10_part1/listbooks')
+
+def delete_bookForms(request, id):
+    book = get_object_or_404(Book, id=id)
+    book.delete()  # Delete the book
+    return redirect('/books/lab10_part5/listbooks')
+
+def edit_book(request, id):
+    book = get_object_or_404(Book, id=id)
+    
+    if request.method == "POST":
+        book.title = request.POST.get('title')
+        book.author = request.POST.get('author')
+        book.price = request.POST.get('price')  # Update price
+        book.edition = request.POST.get('edition')  # Update edition
+        book.save()
+        return redirect('/books/lab10_part1/listbooks')
+    
+    return render(request, 'bookmodule/edit_book.html', {'book': book})
+
+def add_bookForms(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new book to the database
+            return redirect('/books/lab10_part5/listbooks')
+    else:
+        form = BookForm()
+    return render(request, 'bookmodule/add_bookForms.html', {'form': form})
+
+def edit_bookForms(request, id):
+    book = get_object_or_404(Book, id=id)
+    
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()  # Update the book in the database
+            return redirect('/books/lab10_part5/listbooks')
+    else:
+        form = BookForm(instance=book)
+    
+    return render(request, 'bookmodule/edit_bookForms.html', {'form': form, 'book': book})
+
+def list_student1(request):
+    student = Student.objects.all()  # Get all books from the database
+    return render(request, 'bookmodule/list_student.html', {'student': student})
+
+
+def add_student1(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new book to the database
+            return redirect('/books/lab11_part1/liststudent')
+    else:
+        form = StudentForm()
+    return render(request, 'bookmodule/add_student.html', {'form': form})
+
+
+def edit_student1(request,id):
+    student = get_object_or_404(Student, id=id)
+    
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()  # Update the book in the database
+            return redirect('/books/lab11_part1/liststudent')
+    else:
+        form = StudentForm(instance=student)
+
+    return render(request, 'bookmodule/edit_student.html', {'form': form, 'student': student})
+
+
+def delete_student1(request,id):
+    student = get_object_or_404(Student, id=id)
+    student.delete()  # Delete the book
+    return redirect('/books/lab11_part1/liststudent')
+
+
+
+
+
+def list_student2(request):
+    student = Student2.objects.all()  # Get all books from the database
+    return render(request, 'bookmodule/list_student2.html', {'student': student})
+
+
+def add_student2(request):
+    if request.method == 'POST':
+        form = Student2Form(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new book to the database
+            return redirect('/books/lab11_part2/liststudent')
+    else:
+        form = Student2Form()
+    return render(request, 'bookmodule/add_student2.html', {'form': form})
+
+
+def edit_student2(request,id):
+    student = get_object_or_404(Student2, id=id)
+    
+    if request.method == 'POST':
+        form = Student2Form(request.POST, instance=student)
+        if form.is_valid():
+            form.save()  # Update the book in the database
+            return redirect('/books/lab11_part2/liststudent')
+    else:
+        form = Student2Form(instance=student)
+
+    return render(request, 'bookmodule/edit_student2.html', {'form': form, 'student': student})
+
+
+def delete_student2(request,id):
+    student = get_object_or_404(Student2, id=id)
+    student.delete()  # Delete the book
+    return redirect('/books/lab11_part2/liststudent')
+
+def addProduct(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()  # files will be saved into media/documents/
+            return redirect('books/lab11_part3/listproduct')
+    form = ProductForm(None)
+    return render(request, 'bookmodule/addProduct.html', {'form': form})
+
+
+def listProduct(request):
+    products = Product.objects.all()  # Fetch all products
+    return render(request, 'bookmodule/product_list.html', {'products': products})
